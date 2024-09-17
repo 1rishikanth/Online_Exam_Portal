@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exams</title>
+    <link rel="stylesheet" href="./styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Available Exams</h1>
+        <ul>
+            <% exams.forEach(exam => { %>
+                <li>
+                    <a href="/exams/<%= exam._id %>"><%= exam.title %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</body>
+</html>

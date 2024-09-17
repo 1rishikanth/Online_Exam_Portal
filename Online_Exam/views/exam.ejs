@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= exam.title %></title>
+    <style>
+    #timer {
+        font-size: 24px;
+        color: red;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div id="timer">Time remaining: <span id="time"><%= exam.duration %></span></div>
+    <h1><%= exam.title %></h1>
+    <button onclick="startTimer()">Start Timer</button>
+    <p><%= exam.description %></p>
+    <form id="exam-form" action="/exam/submit" method="POST">
+        <input type="hidden" name="examId" value="<%= exam._id %>">
+        <% exam.questions.forEach((question, index) => { %>
+            <div>
+                <p><%= question.question %></p>
+                <% question.options.forEach((option, optionIndex) => { %>
+                    <label>
+                        <input type="radio" name="answers[<%= index %>]" value="<%= optionIndex %>"> <%= option %>
+                    </label>
+                <% }) %>
+            </div>
+        <% }) %>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        // Parse the duration from MM:SS format to total seconds
+        const duration = "<%= exam.duration %>";
+        const [minutes, seconds] = duration.split(":").map(Number);
+        let totalSeconds = minutes * 60 + seconds;
+
+        const timer = document.getElementById('time');
+        const form = document.getElementById('exam-form');
+
+        function startTimer() {
+            const interval = setInterval(() => {
+                totalSeconds--;
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                if (totalSeconds <= 0) {
+                    clearInterval(interval);
+                    form.submit();
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

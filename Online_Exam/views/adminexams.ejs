@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Exams</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Exams</h1>
+        <a href="/admin/exams/new">Add New Exam</a>
+        <ul>
+            <% exams.forEach(exam => { %>
+                <li>
+                    <%= exam.title %> 
+                    <a href="/admin/exams/<%= exam._id %>/edit">Edit</a>
+                    <form action="/admin/exams/<%= exam._id %>/delete" method="POST" style="display: inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</body>
+</html>

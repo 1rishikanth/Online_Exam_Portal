@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Exam</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .question {
+            margin-bottom: 15px;
+        }
+        .question label {
+            display: block;
+        }
+        .question input[type="text"], .question textarea {
+            margin-bottom: 5px;
+        }
+        .remove-question {
+            cursor: pointer;
+            color: red;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+        }
+        .option input[type="text"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Exam</h1>
+        <form action="/admin/exams/<%= exam._id %>" method="POST">
+            <label for="title">Title:</label>
+            <input type="text" name="title" value="<%= exam.title %>" required>
+            <label for="duration">Duration (MM:SS):</label>
+            <input type="text" name="duration" value="<%= exam.duration %>" pattern="^[0-5]?[0-9]:[0-5][0-9]$" required>
+            <label for="questions">Questions:</label>
+            <div id="questions-container">
+                <% exam.questions.forEach((question, qIndex) => { %>
+                    <div class="question" data-index="<%= qIndex %>">
+                        <label for="question-<%= qIndex %>">Question:</label>
+                        <input type="text" name="questions[<%= qIndex %>][question]" value="<%= question.question %>" required>
+                        <label for="options-<%= qIndex %>">Options:</label>
+                        <% question.options.forEach((option, oIndex) => { %>
+                            <div class="option">
+                                <input type="text" name="questions[<%= qIndex %>][options][]" value="<%= option %>" required>
+                            </div>
+                        <% }) %>
+                        <label for="answer-<%= qIndex %>">Answer:</label>
+                        <input type="number" name="questions[<%= qIndex %>][answer]" value="<%= question.answer %>" required> 
+                        <span class="remove-question">Remove</span>
+                    </div>
+                <% }) %>
+            </div>
+
+            <button type="button" id="add-question">Add Question</button>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionsContainer = document.getElementById('questions-container');
+            const addQuestionButton = document.getElementById('add-question');
+
+            addQuestionButton.addEventListener('click', function() {
+                const questionCount = questionsContainer.children.length;
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.dataset.index = questionCount;
+
+                questionDiv.innerHTML = `
+                    <label for="question-${questionCount}">Question:</label>
+                    <input type="text" name="questions[${questionCount}][question]" required>
+                    <label for="options-${questionCount}">Options:</label>
+                    <div class="option">
+                        <input type="text" name="questions[${questionCount}][options][]" required>
+                    </div>
+                    <div class="option">
+                        <input type="text" name="questions[${questionCount}][options][]" required>
+                    </div>
+                    <div class="option">
+                        <input type="text" name="questions[${questionCount}][options][]" required>
+                    </div>
+                    <div class="option">
+                        <input type="text" name="questions[${questionCount}][options][]" required>
+                    </div>
+                    <label for="answer-${questionCount}">Answer:</label>
+                    <input type="number" name="questions[${questionCount}][answer]" required>
+                    <span class="remove-question">Remove</span>
+                `;
+
+                questionsContainer.appendChild(questionDiv);
+                attachRemoveListeners();
+            });
+
+            function attachRemoveListeners() {
+                const removeButtons = document.querySelectorAll('.remove-question');
+                removeButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        button.parentElement.remove();
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

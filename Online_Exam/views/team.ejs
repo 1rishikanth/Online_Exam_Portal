@@ -1,0 +1,50 @@
+<%- include("partials/Header.ejs") %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Our Team</title>
+    <style>
+        .team-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+        }
+        .team-member {
+            text-align: center;
+            width: 200px;
+        }
+         .team-member img {
+            width: 80%;
+            border-radius: 40%;
+        } 
+        .team-member h2 {
+            font-size: 1.2em;
+            margin: 10px 0 5px;
+        }
+        .team-member p {
+            font-size: 1em;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="team-container">
+        <div class="team-member">
+            <img src="..\Images\pandi.jpg" >
+            <h2>Santhosh Pandi</h2>
+            <p>Role: Software Testing</p>
+            <p>Description: Responsible for Testing the application .</p>
+        </div>
+        <div class="team-member">
+            <img src="../Images/Rishi.jpg" >
+            <h2>Rishikanth</h2>
+            <p>Role: Developer</p>
+            <p>Description: Focuses on writing code, developing features, and fixing bugs.</p>
+        </div>
+    </div>
+</body>
+</html>
+
+<%-include("partials/footer.ejs")%>
